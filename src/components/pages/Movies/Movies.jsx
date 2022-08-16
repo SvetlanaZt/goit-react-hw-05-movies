@@ -1,44 +1,39 @@
 // import { Outlet } from "react-router-dom"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import { StyledDiv, StyledInput } from './Movies.styled';
+import {fetcMovies} from 'api/api'
 
-export const Movies = () => {
+export default function Movies() {
     const [name, setName] = useState('');
     const [movies, setMovie] = useState('');
 
-const navigate = useNavigate();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        const key = 'a42a61c067e66eee5834012056e5662a';
-        fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${name}`)
-            .then(res => {
-        if (res.ok) {
-           return res.json();
-        } 
-    }).then(data=> setMovie(data.results))
+        fetcMovies(name).then(data=> setMovie(data.results))
     },[name])
 
      const onSuubmit = evt => {
          evt.preventDefault();
-         navigate(`?query=${name}`, { replace: true })
-         
+         navigate(`?query=${name}`, { replace: true }) 
     }
     
     const onChange = evt => {
-    setName(evt.target.value)
+        setName(evt.target.value)
     }
 
     return ( 
-       <main>
+       <StyledDiv>
             <form onSubmit={onSuubmit}>
-                <input
+                <StyledInput
       name="name"
         value={name}
         onChange={onChange}
       type="text"
       autoComplete='off'
       autoFocus
-      placeholder="Search images and photos"
                 />
                 <button type="submit">
       <span>Search</span>
@@ -48,9 +43,11 @@ const navigate = useNavigate();
              <div><ul>
               {movies && movies.map(movie => (
                   <li key={movie.id}>
-                      <Link to={`/movies/${movie.id}`}> { movie.title}</Link></li>
+                      <Link to={`/movies/${movie.id}`}
+                          state={{ location }}
+                      >{movie.title}</Link></li>
               ))}
           </ul> 
           </div>
-        </main>)
+        </StyledDiv>)
 }
