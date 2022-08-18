@@ -12,8 +12,6 @@ export default function HomeMovies() {
     const locationNav = location.state.location.pathname;
     const navigate = useNavigate();
 
-
-
     useEffect(() => {
         fetchHomeMovies(movieId).then(data => setMovie(data))
     }, [movieId])

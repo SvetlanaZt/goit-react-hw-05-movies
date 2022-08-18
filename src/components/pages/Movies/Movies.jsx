@@ -17,20 +17,16 @@ export default function Movies() {
 
      const onSuubmit = evt => {
          evt.preventDefault();
-         navigate(`?query=${name}`, { replace: true }) 
-    }
-    
-    const onChange = evt => {
-        setName(evt.target.value)
+         const vslue = evt.target.name.value;
+          setName(vslue);
+         navigate(`?query=${vslue}`, { replace: true });
     }
 
     return ( 
        <StyledDiv>
             <form onSubmit={onSuubmit}>
                 <StyledInput
-      name="name"
-        value={name}
-        onChange={onChange}
+            name='name'
       type="text"
       autoComplete='off'
       autoFocus
