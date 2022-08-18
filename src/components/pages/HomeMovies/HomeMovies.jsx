@@ -5,25 +5,36 @@ import { fetchHomeMovies } from 'api/api'
     
 export default function HomeMovies() {
     const [movies, setMovie] = useState('');
-
-    const  {movieId}  = useParams()
-  
+    const [saveLocation, setsaveLocation] = useState(null);
+    const { movieId } = useParams();
     const location = useLocation();
-    const locationNav = location.pathname;
-    console.log(location.pathname)
-    const navigate = useNavigate();
-
+     const navigate = useNavigate();
+  
+    const locationState = location.state;
+    const locationName = location.state.location.pathname;
+    console.log(locationName)
+    useEffect(() => { 
+        if (locationState) {
+    setsaveLocation(locationName)
+        }
+        
+    }, [locationState, locationName])
+  
     useEffect(() => {
         fetchHomeMovies(movieId).then(data => setMovie(data))
     }, [movieId])
 
+    
+    function goBack() {
+        if (locationName) {
+           return navigate(saveLocation)
+       }
+            return  navigate('/');
+    }
+    
     const dataYear = parseInt(movies.release_date);
     const userScore = parseInt(movies.vote_average * 100 / 10)
     
-    function goBack(e) {
-        console.log(e)
-navigate( locationNav, { replace: true }) 
-     }
     return (
     <div>
             {movies && <>
@@ -40,7 +51,7 @@ navigate( locationNav, { replace: true })
             </>}
             <StyledAddit>
                 <p>Additional Information</p>
-            <StyleHomeMovies to={'cast'}>Cast</StyleHomeMovies>
+            <StyleHomeMovies to={'/cast'}>Cast</StyleHomeMovies>
                 <StyleHomeMovies to={'reviews'}>Reviews</StyleHomeMovies>
                 </StyledAddit>
             <Outlet />

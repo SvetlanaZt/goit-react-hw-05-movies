@@ -5,7 +5,8 @@ import {fetchCast} from 'api/api'
 export default function Cast() {
     const [movies, setMovie] = useState('');
 
-    const { movieId }  = useParams()
+    const { movieId } = useParams()
+    console.log(movieId)
 
     useEffect(() => {
         fetchCast(movieId).then(data => setMovie(data.cast))
