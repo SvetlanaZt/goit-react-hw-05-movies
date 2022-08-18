@@ -9,7 +9,8 @@ export default function HomeMovies() {
     const  {movieId}  = useParams()
   
     const location = useLocation();
-    const locationNav = location.state.location.pathname;
+    const locationNav = location.pathname;
+    console.log(location.pathname)
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,7 +20,8 @@ export default function HomeMovies() {
     const dataYear = parseInt(movies.release_date);
     const userScore = parseInt(movies.vote_average * 100 / 10)
     
-    function goBack() {
+    function goBack(e) {
+        console.log(e)
 navigate( locationNav, { replace: true }) 
      }
     return (
