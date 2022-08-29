@@ -1,35 +1,37 @@
-// import { Outlet } from "react-router-dom"
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { StyledDiv, StyledInput } from './Movies.styled';
 import {fetcMovies} from 'api/api'
 
 export default function Movies() {
-    const [name, setName] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
+    const query = searchParams.get('query')
+
+    const [name, setName] = useState(query ??'');
     const [movies, setMovie] = useState('');
 
-    const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
-        fetcMovies(name).then(data=> setMovie(data.results))
-    },[name])
+        if (!query) return;
+        fetcMovies(query).then(data=> setMovie(data.results))
+    },[query])
 
      const onSuubmit = evt => {
          evt.preventDefault();
-         const vslue = evt.target.name.value;
-          setName(vslue);
-         navigate(`?query=${vslue}`, { replace: true });
+         setSearchParams(`?query=${name}`)
     }
 
     return ( 
-       <StyledDiv>
-            <form onSubmit={onSuubmit}>
+    <StyledDiv>
+        <form onSubmit={onSuubmit}>
                 <StyledInput
-            name='name'
-      type="text"
-      autoComplete='off'
-      autoFocus
+                    onChange={e=> setName(e.target.value)}
+                    name='name'
+                    type="text"
+                    autoComplete='off'
+                    autoFocus
+                    value={name} 
                 />
                 <button type="submit">
       <span>Search</span>
@@ -40,7 +42,7 @@ export default function Movies() {
               {movies && movies.map(movie => (
                   <li key={movie.id}>
                       <Link to={`/movies/${movie.id}`}
-                          state={{ location }}
+                          state={{ from: location }}
                       >{movie.title}</Link></li>
               ))}
           </ul> 

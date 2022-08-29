@@ -18,7 +18,7 @@ const [movies, setMovie] = useState('')
               {movies && movies.map(movie => (
                   <li key={movie.id}>
                   <Link to={`movies/${movie.id}`}
-                     state={{ location }}
+                     state={{ from: location }}
                    >{movie.title || movie.name}</Link></li>
               ))}
           </ul> 

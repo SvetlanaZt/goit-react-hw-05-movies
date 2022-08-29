@@ -17,16 +17,16 @@ export default function Reviews() {
     },[movieId])
 
 
-    return (<div>  <ul>
+    return (<div> 
         {movies.length > 0 ? (
           movies.map(movie => (
-            <li key={movie.author}>
+            <>
               <p>Author: {movie.author}</p>
               <p>Content: {movie.content}</p>
-            </li>
+            </>
           ))
         ) : (
           <p>We don't have any reviews for this movie</p>
         )}
-      </ul></div>)
+      </div>)
 }
