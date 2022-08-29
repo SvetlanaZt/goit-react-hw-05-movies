@@ -1,6 +1,7 @@
-import { useParams, Outlet, useLocation, Link} from "react-router-dom";
+import { useParams, Outlet, useLocation} from "react-router-dom";
+import { Suspense } from 'react';
 import { useState, useEffect } from "react";
-import { StyleHomeMovies, StyledDiv, StyledDivBlock, StyledAddit } from './HomeMovies.styled';
+import { StyleHomeMovies, StyledDiv, StyledDivBlock, StyledAddit, StyleLinkGoBack } from './HomeMovies.styled';
 import { fetchHomeMovies } from 'api/api'
     
 export default function HomeMovies() {
@@ -8,7 +9,7 @@ export default function HomeMovies() {
     const { movieId } = useParams();
     const location = useLocation();
   
-    const goBackLink = location?.state?.from ?? '/'
+    const goBackLink = location?.state?.from ?? '/';
   
     useEffect(() => {
         fetchHomeMovies(movieId).then(data => setMovie(data))
@@ -21,7 +22,7 @@ export default function HomeMovies() {
     return (
     <div>
             {movies && <>
-                <Link to={goBackLink}> go back</Link>
+                <StyleLinkGoBack to={goBackLink}> go back</StyleLinkGoBack>
                 <StyledDiv>
                     <img src={`https://image.tmdb.org/t/p/w500${movies.poster_path}`} alt={movies.title} width='250px'></img>
                     <StyledDivBlock>
@@ -34,12 +35,12 @@ export default function HomeMovies() {
             </>}
             <StyledAddit>
                 <p>Additional Information</p>
-            <StyleHomeMovies to={'cast'}>Cast</StyleHomeMovies>
-                <StyleHomeMovies to={'reviews'}>Reviews</StyleHomeMovies>
+            <StyleHomeMovies to={'cast'} state={{from: goBackLink}}>Cast</StyleHomeMovies>
+                <StyleHomeMovies to={'reviews'} state={{from: goBackLink}}>Reviews</StyleHomeMovies>
                 </StyledAddit>
-            <Outlet />
-            
-            
+                <Suspense fallback={<p>Loading...</p>}>
+            <Outlet /> 
+            </Suspense>
         </div>
      )
  }

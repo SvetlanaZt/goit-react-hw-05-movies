@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const StyledDiv = styled.div`
@@ -19,4 +19,10 @@ export const StyleHomeMovies = styled(NavLink)`
   margin: 10px;
   text-decoration: none;
   display: flex;
+`;
+
+export const StyleLinkGoBack = styled(Link)`
+background-color: white;
+border: 1px solid #eeebeb;
+text-decoration: none;
 `;
