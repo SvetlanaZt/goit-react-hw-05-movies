@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 export const StyledDiv = styled.div`
   display: flex;
-  margin-top: 20px;
 `;
 
 export const StyledDivBlock = styled.div`
